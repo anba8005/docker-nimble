@@ -20,4 +20,6 @@ USER nimble
 
 RUN ln -s /dev/stderr /var/log/nimble/nimble.log
 
+EXPOSE 1935 8081
+
 CMD	["/usr/bin/nimble", "--conf-dir=/etc/nimble", "--log-dir=/var/log/nimble"]
