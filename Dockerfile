@@ -1,7 +1,7 @@
 FROM ubuntu:focal
 
 RUN apt-get update \
-	&& apt-get --no-install-recommends install -y wget tzdata gnupg \
+	&& apt-get --no-install-recommends install -y wget tzdata gnupg gettext-base \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -16,10 +16,14 @@ RUN	apt-get update \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
+RUN chown -R nimble /etc/nimble
+
 USER nimble
 
 RUN ln -s /dev/stderr /var/log/nimble/nimble.log
 
 EXPOSE 1935 8081
 
-CMD	["/usr/bin/nimble", "--conf-dir=/etc/nimble", "--log-dir=/var/log/nimble"]
+CMD	envsubst '$$TOKEN' < /etc/nimble-dist/nimble.conf > /etc/nimble/nimble.conf && \
+	cp /etc/nimble-dist/rules.conf /etc/nimble/rules.conf && \
+	/usr/bin/nimble --conf-dir=/etc/nimble --log-dir=/var/log/nimble
