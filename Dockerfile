@@ -24,6 +24,6 @@ RUN ln -s /dev/stderr /var/log/nimble/nimble.log
 
 EXPOSE 1935 8081
 
-CMD	envsubst '$$TOKEN' < /etc/nimble-dist/nimble.conf > /etc/nimble/nimble.conf && \
+CMD	envsubst '$$TOKEN,$$NODE_NAME' < /etc/nimble-dist/nimble.conf > /etc/nimble/nimble.conf && \
 	cp /etc/nimble-dist/rules.conf /etc/nimble/rules.conf && \
 	/usr/bin/nimble --conf-dir=/etc/nimble --log-dir=/var/log/nimble
